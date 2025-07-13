@@ -239,7 +239,7 @@ const _: () = {
         [::std::mem::offset_of!(CSTL_ListIter, pointer) - 8usize];
 };
 unsafe extern "C" {
-    #[doc = " Initializes the list pointed to by `new_instance`, allocating the sentinel node.\n\n An initialized list is empty. It can be trivially destroyed without leaks as long\n as no functions that allocate (push, insert, etc.) have been called on it.\n\n Re-initializing a list with existing nodes will leak the old nodes.\n"]
+    #[doc = " Initializes the list pointed to by `new_instance`, allocating the sentinel node.\n\n Because of the sentinel node, the list is never empty, even if it contains no elements. `CSTL_list_destroy` must be called to free the allocated sentinel node.\n\n Re-initializing a list with existing nodes will leak the old nodes.\n"]
     pub fn CSTL_list_construct(new_instance: CSTL_ListRef, alloc: *mut CSTL_Alloc);
 }
 unsafe extern "C" {
@@ -288,19 +288,26 @@ unsafe extern "C" {
 }
 unsafe extern "C" {
     #[doc = " Returns a pointer to the first element in the list.\n\n If `CSTL_list_empty(instance) == true`, the behavior is undefined.\n"]
-    pub fn CSTL_list_front(instance: CSTL_ListRef) -> *mut ::std::os::raw::c_void;
+    pub fn CSTL_list_front(instance: CSTL_ListRef, type_: CSTL_Type)
+        -> *mut ::std::os::raw::c_void;
 }
 unsafe extern "C" {
     #[doc = " Returns a const pointer to the first element in the list.\n\n If `CSTL_list_empty(instance) == true`, the behavior is undefined.\n"]
-    pub fn CSTL_list_const_front(instance: CSTL_ListCRef) -> *const ::std::os::raw::c_void;
+    pub fn CSTL_list_const_front(
+        instance: CSTL_ListCRef,
+        type_: CSTL_Type,
+    ) -> *const ::std::os::raw::c_void;
 }
 unsafe extern "C" {
     #[doc = " Returns a pointer to the last element in the list.\n\n If `CSTL_list_empty(instance) == true`, the behavior is undefined.\n"]
-    pub fn CSTL_list_back(instance: CSTL_ListRef) -> *mut ::std::os::raw::c_void;
+    pub fn CSTL_list_back(instance: CSTL_ListRef, type_: CSTL_Type) -> *mut ::std::os::raw::c_void;
 }
 unsafe extern "C" {
     #[doc = " Returns a const pointer to the last element in the list.\n\n If `CSTL_list_empty(instance) == true`, the behavior is undefined.\n"]
-    pub fn CSTL_list_const_back(instance: CSTL_ListCRef) -> *const ::std::os::raw::c_void;
+    pub fn CSTL_list_const_back(
+        instance: CSTL_ListCRef,
+        type_: CSTL_Type,
+    ) -> *const ::std::os::raw::c_void;
 }
 unsafe extern "C" {
     #[doc = " Constructs an iterator to the first element of the list.\n\n If the list is empty, the returned iterator will equal `CSTL_list_end(instance)`.\n"]
@@ -320,7 +327,10 @@ unsafe extern "C" {
 }
 unsafe extern "C" {
     #[doc = " Dereferences the iterator at the element it's pointing to.\n\n Returns a pointer to the element. `iterator` must be dereferenceable.\n"]
-    pub fn CSTL_list_iterator_deref(iterator: CSTL_ListIter) -> *mut ::std::os::raw::c_void;
+    pub fn CSTL_list_iterator_deref(
+        iterator: CSTL_ListIter,
+        type_: CSTL_Type,
+    ) -> *mut ::std::os::raw::c_void;
 }
 unsafe extern "C" {
     #[doc = " Subtracts two iterators and returns the distance measured in elements.\n\n The iterators must belong to the same list.\n"]
