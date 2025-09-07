@@ -1,3 +1,4 @@
 [submodule "CSTL"]
 	path = CSTL
-	url = https://github.com/Dasaav-dsv/CSTL.git
+	url = https://github.com/DuelistEventNetwork/CSTL.git
+	branch = denmain
